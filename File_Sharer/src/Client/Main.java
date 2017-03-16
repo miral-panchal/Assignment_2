@@ -7,12 +7,22 @@ import javafx.stage.Stage;
  * Created by miral on 16/03/17.
  */
 public class Main extends Application {
+
+    public static String hostname;
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage = UI.setUI(primaryStage);
 
+
+
     }
 
-    public static void main (String args []) {launch(args);}
+    public static void main (String args []) {
+
+        hostname = "localhost";
+
+        launch(args);
+    }
 
 }
