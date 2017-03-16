@@ -7,23 +7,26 @@ import javafx.scene.control.SplitPane;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 
 /**
  * Created by miral on 14/03/17.
  */
-public class UI extends Application{
+public class UI{
 
-    BorderPane bp;
-    SplitPane sp;
-    HBox hb;
+    private static BorderPane bp;
+    private static SplitPane sp;
+    private static HBox hb;
 
-    TableView clientTable;
-    TableView serverTable;
-    @Override
-    public void start(Stage primaryStage) throws Exception {
+    public static TableView clientTable;
+    public static TableView serverTable;
+
+    public static Button download;
+    public static Button upload;
+
+    public static Stage setUI(Stage primaryStage) throws Exception {
+
         primaryStage.setTitle("File Sharer");
 
         sp = new SplitPane();
@@ -35,8 +38,8 @@ public class UI extends Application{
 
         hb = new HBox();
 
-        Button download = new Button ("Download");
-        Button upload = new Button ("Upload");
+        download = new Button ("Download");
+        upload = new Button ("Upload");
 
         hb.getChildren().addAll(download,upload);
         hb.setSpacing(10);
@@ -51,8 +54,6 @@ public class UI extends Application{
         primaryStage.setScene(scene);
         primaryStage.show();
 
+        return primaryStage;
     }
-
-    public static void main (String args[]) {launch(args);}
-
 }
