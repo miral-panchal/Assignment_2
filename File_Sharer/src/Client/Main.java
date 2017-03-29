@@ -43,27 +43,17 @@ public class Main extends Application {
         }
         catch (Exception e) {e.printStackTrace();}
 
-        boolean exit = false;
-        while(!exit){
-            Scanner scanner = new Scanner(System.in);
-            System.out.print("Enter Command");
-            out.println(scanner.next()); // Get what the user types.
-            try {
-                String msg = in.readLine();
-                System.out.println(msg);
-                    if(!msg.equals("Not a valid command")) {
-                        System.out.println("asdf");
-                        out.println(scanner.next()); // Get what the user types.
-                        exit = true;
-                    }else
-                        exit = false;
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-        }
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter Command");
+        out.println(scanner.next()); // Get what the user types.
         try {
+            String msg = in.readLine();
+            System.out.println(msg);
+            if(!msg.equals("Not a valid command")) {
+                System.out.println("The file to upload or download: ");
+                out.println(scanner.next()); // Get what the user types.
+            }else
+
             socket.close();
         } catch (IOException e) {
             e.printStackTrace();
