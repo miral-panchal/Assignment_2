@@ -4,9 +4,11 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Scanner;
 
 
 /**
@@ -20,10 +22,7 @@ public class Main extends Application {
     static PrintWriter out;
 
     public  static String HOSTNAME = "localhost";
-    public  static int    PORT = 80;
-
-    private static String compName = "Computer";
-    private static String folderPath = "~/Desktop/Test";
+    public  static int    PORT = 8080;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -34,22 +33,40 @@ public class Main extends Application {
 
     public static void main (String args []) {
 
-//        compName = args[0];
-//        folderPath = args[1];
-
         try {
             socket = new Socket(HOSTNAME,PORT);
 
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            out = new PrintWriter(socket.getOutputStream());
+            out = new PrintWriter(socket.getOutputStream(),true);
 
 
-            // close the connection (3-way tear down handshake)
-            out.close();
-            in.close();
-            socket.close();
+            System.out.println(in.readLine());
         }
         catch (Exception e) {e.printStackTrace();}
+
+        boolean exit = false;
+        while(!exit){
+            Scanner scanner = new Scanner(System.in);
+            System.out.print("Enter Command");
+            out.println(scanner.next()); // Get what the user types.
+            try {
+                if(in.ready()) {
+                    if(!in.readLine().equals("Not a valid command"))
+                        exit = true;
+                }else{
+                    exit = true;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            System.out.println("rerun");
+        }
+        try {
+            socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
 
         launch(args);
     }
