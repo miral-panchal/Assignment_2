@@ -42,7 +42,6 @@ public class FileShareServerThread extends Thread {
                 // Call the DIR function
                 DIR();
             } else if (message.equals("UPLOAD")) {
-                out.println("UPLOAD");
                 //get the name of the file to upload from the client
                 message = in.readLine();
                 Upload(message);
