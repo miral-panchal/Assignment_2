@@ -19,7 +19,7 @@ public class FileShareServerThread extends Thread {
         this.socket = socket;
 
         try {
-            out = new PrintWriter(socket.getOutputStream(), true);
+            out = new PrintWriter(socket.getOutputStream(),true);
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
         } catch (IOException e) {
@@ -28,29 +28,32 @@ public class FileShareServerThread extends Thread {
     }
 
     public void run() {
-        // initialize interaction
-        out.println("Connected to the server");
-
+        Upload("hello.txt");
         boolean endOfSession = false;
 
         while(!endOfSession) {
             try {
-                String message = null;
-                if(in.ready()) {
-                    message = in.readLine();
+                String message = in.readLine();
+
+                // is the client sending a message
+                if(message != null) {
+                    // read the message the client sent
+                    //message = in.readLine();
+
+                    // if the message is equal to DIR
                     if (message.equals("DIR")) {
+                        // Call the DIR function
+                        System.out.println(message);
                         DIR();
+                        // end the while loop
                         endOfSession = true;
                     } else if (message.equals("UPLOAD")) {
-                        Upload(in.readLine());
                         System.out.println("Upload");
+                        Upload(in.readLine());
                         endOfSession = true;
                     } else if (message.equals("DOWNLOAD")) {
                         System.out.println("Download");
                         endOfSession = true;
-                    } else {
-                        System.out.println("Not a valid command");
-                        out.println("Not a valid command");
                     }
                 }
             } catch (IOException e) {
@@ -59,6 +62,7 @@ public class FileShareServerThread extends Thread {
         }
 
         try {
+            // close the connection(socket)
             socket.close();
         } catch(IOException e) {
             e.printStackTrace();
@@ -66,15 +70,32 @@ public class FileShareServerThread extends Thread {
     }
 
 
+    /**
+     * send the list of the files in the shared folder on the server to the client
+     */
     public void DIR(){
         File mainDirectory = new File(folderName);
         File[] filesInDir = mainDirectory.listFiles();
         for (int i = 0; i < filesInDir.length; i++) {
             out.println(filesInDir[i].getName());
+            System.out.println(filesInDir[i].getName());
         }
     }
 
     public void Upload(String fileName){
+        // make a new file object and tell it the location+name of the file to create
+        File file = new File(folderName+File.separator+fileName);
+        try {
+            PrintWriter output = new PrintWriter(file);
+            String msg = in.readLine();
+            while(msg != null){
+                msg = in.readLine();
+                output.println(msg);
+            }
+            output.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void Download(){

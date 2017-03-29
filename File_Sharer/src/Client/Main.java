@@ -40,7 +40,6 @@ public class Main extends Application {
             out = new PrintWriter(socket.getOutputStream(),true);
 
 
-            System.out.println(in.readLine());
         }
         catch (Exception e) {e.printStackTrace();}
 
@@ -50,16 +49,19 @@ public class Main extends Application {
             System.out.print("Enter Command");
             out.println(scanner.next()); // Get what the user types.
             try {
-                if(in.ready()) {
-                    if(!in.readLine().equals("Not a valid command"))
+                String msg = in.readLine();
+                System.out.println(msg);
+                    if(!msg.equals("Not a valid command")) {
+                        System.out.println("asdf");
+                        out.println(scanner.next()); // Get what the user types.
                         exit = true;
-                }else{
-                    exit = true;
-                }
+                    }else
+                        exit = false;
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            System.out.println("rerun");
+
         }
         try {
             socket.close();
