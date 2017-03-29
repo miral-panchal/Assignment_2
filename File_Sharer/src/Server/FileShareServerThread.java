@@ -1,15 +1,14 @@
 package Server;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
 
 /**
  * Created by faizan on 27/03/17.
  */
 public class FileShareServerThread extends Thread {
+
+    private static final String folderName = "Shared Folder";
 
     protected Socket socket       = null;
     protected PrintWriter out     = null;
@@ -37,24 +36,23 @@ public class FileShareServerThread extends Thread {
         while(!endOfSession) {
             try {
                 String message = null;
-                if(in.ready())
+                if(in.ready()) {
                     message = in.readLine();
-                if(message.equals("DIR")) {
-                    System.out.println("DIR");
-                    endOfSession = true;
+                    if (message.equals("DIR")) {
+                        DIR();
+                        endOfSession = true;
+                    } else if (message.equals("UPLOAD")) {
+                        Upload(in.readLine());
+                        System.out.println("Upload");
+                        endOfSession = true;
+                    } else if (message.equals("DOWNLOAD")) {
+                        System.out.println("Download");
+                        endOfSession = true;
+                    } else {
+                        System.out.println("Not a valid command");
+                        out.println("Not a valid command");
+                    }
                 }
-                 else if(message.equals("UPLOAD")){
-                    System.out.println("Upload");
-                    endOfSession = true;
-                }else if(message.equals("DOWNLOAD")) {
-                    System.out.println("Download");
-                    endOfSession = true;
-                }
-                else {
-                    System.out.println("Not a valid command");
-                    out.println("Not a valid command");
-                }
-
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -69,7 +67,18 @@ public class FileShareServerThread extends Thread {
 
 
     public void DIR(){
-        File
+        File mainDirectory = new File(folderName);
+        File[] filesInDir = mainDirectory.listFiles();
+        for (int i = 0; i < filesInDir.length; i++) {
+            out.println(filesInDir[i].getName());
+        }
+    }
+
+    public void Upload(String fileName){
+    }
+
+    public void Download(){
+
     }
 
 }

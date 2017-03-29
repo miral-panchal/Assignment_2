@@ -11,7 +11,7 @@ import java.util.Vector;
  */
 public class FileShareServer {
 
-    // create server socket used to accept connections on port SERVER_PORT
+    // create serve7r socket used to accept connections on port SERVER_PORT
     protected ServerSocket serverSocket;
 
     protected Socket clientSocket;
