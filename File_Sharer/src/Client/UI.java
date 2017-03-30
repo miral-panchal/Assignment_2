@@ -102,20 +102,19 @@ public class UI{
                 new_file.createNewFile();
                 downloadFile(in, out, new_file);
             }
-
-            //Main.dir();
         }
         catch (Exception e){e.printStackTrace();}
     }
 
     private static void downloadFile(BufferedReader in, PrintWriter out, File file) throws IOException{
-        FileOutputStream fOut = new FileOutputStream(file);
+        PrintWriter fOut = new PrintWriter(file);
         out.println("DOWNLOAD");
         out.println(file.getName());
         out.flush();
 
-        while(in.readLine()!= null) {
-            fOut.write(in.read());
+        String line;
+        while((line = in.readLine())!= null) {
+            fOut.println(line);
         }
 
         out.close();

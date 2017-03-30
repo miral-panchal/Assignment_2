@@ -17,7 +17,7 @@ public class Main extends Application {
     public static BufferedReader in;
     public static PrintWriter out;
 
-    public static String HOSTNAME = "99.236.141.52";
+    public static String HOSTNAME = "10.190.17.169";
     public static int    PORT = 8080;
 
     File sharedFolder;
@@ -53,19 +53,7 @@ public class Main extends Application {
             clientDS.setFiles(file.getName());
     }
 
-    public static void main (String args []) {
-        try {
-            socket = new Socket(HOSTNAME,PORT);
-
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            out = new PrintWriter(socket.getOutputStream(),true);
-
-            launch(args);
-
-            socket.close();
-        }
-        catch (Exception e) {e.printStackTrace();}
-    }
+    public static void main (String args []) { launch(args); }
 
     public void dir() throws IOException{
         socket = new Socket(HOSTNAME, PORT);

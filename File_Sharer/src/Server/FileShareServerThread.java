@@ -108,8 +108,12 @@ public class FileShareServerThread extends Thread {
             FileReader fileReader  = new FileReader(fileName);
             BufferedReader input = new BufferedReader(fileReader);
             String line;
+
+            System.out.println(fileName);
             while ((line = input.readLine()) != null) {
                 out.println(line);
+                System.out.println(line);
+
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
