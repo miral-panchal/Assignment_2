@@ -17,19 +17,23 @@ import java.util.Optional;
  * Created by miral on 14/03/17.
  */
 public class UI{
-    private static Stage primaryStage;
+    private Stage primaryStage;
 
-    private static BorderPane bp;
-    private static SplitPane sp;
-    private static HBox hb;
+    private BorderPane bp;
+    private SplitPane sp;
+    private HBox hb;
 
-    public static TableView<FileList> clientTable;
-    public static TableView<FileList> serverTable;
+    public TableView<FileList> clientTable;
+    public TableView<FileList> serverTable;
 
-    public static Button download;
-    public static Button upload;
+    public Button download;
+    public Button upload;
 
-    public static Stage setUI(Stage stage) throws Exception {
+    private Main main;
+    public UI(Main main){
+        this.main = main;
+    }
+    public Stage setUI(Stage stage) throws Exception {
         primaryStage= stage;
         primaryStage.setTitle("File Sharer");
 
@@ -68,8 +72,8 @@ public class UI{
         bp.setTop(hb);
         bp.setCenter(sp);
 
-        download.setOnAction(e -> _downloadFiles(Main.in, Main.out, clientTable, serverTable));
-        upload.setOnAction(e -> _uploadFiles(Main.in, Main.out, clientTable, serverTable));
+        download.setOnAction(e -> _downloadFiles(main.in, main.out, clientTable, serverTable));
+        upload.setOnAction(e -> _uploadFiles(main.in, main.out, clientTable, serverTable));
 
         Scene scene = new Scene(bp, 650, 650);
         primaryStage.setResizable(false);
@@ -79,14 +83,14 @@ public class UI{
         return primaryStage;
     }
 
-    public static void _downloadFiles(BufferedReader in, PrintWriter out, TableView<FileList> cTable, TableView<FileList> sTable){
+    public void _downloadFiles(BufferedReader in, PrintWriter out, TableView<FileList> cTable, TableView<FileList> sTable){
         FileList file_download = sTable.getSelectionModel().getSelectedItem();
 
         try {
 
-            Main.socket = new Socket(Main.HOSTNAME, Main.PORT);
-            in = new BufferedReader(new InputStreamReader(Main.socket.getInputStream()));
-            out = new PrintWriter(Main.socket.getOutputStream(),true);
+            main.socket = new Socket(main.HOSTNAME, main.PORT);
+            in = new BufferedReader(new InputStreamReader(main.socket.getInputStream()));
+            out = new PrintWriter(main.socket.getOutputStream(),true);
 
             File new_file = new File(file_download.getFileName());
             if(cTable.getItems().contains(file_download)) {
@@ -106,7 +110,7 @@ public class UI{
         catch (Exception e){e.printStackTrace();}
     }
 
-    private static void downloadFile(BufferedReader in, PrintWriter out, File file) throws IOException{
+    private void downloadFile(BufferedReader in, PrintWriter out, File file) throws IOException{
         PrintWriter fOut = new PrintWriter(file);
         out.println("DOWNLOAD");
         out.println(file.getName());
@@ -122,13 +126,13 @@ public class UI{
         fOut.close();
     }
 
-    public static void _uploadFiles(BufferedReader in, PrintWriter out, TableView<FileList> cTable, TableView<FileList> sTable) {
+    public void _uploadFiles(BufferedReader in, PrintWriter out, TableView<FileList> cTable, TableView<FileList> sTable) {
         FileList file_download = cTable.getSelectionModel().getSelectedItem();
 
         try {
-            Main.socket = new Socket(Main.HOSTNAME, Main.PORT);
-            in = new BufferedReader(new InputStreamReader(Main.socket.getInputStream()));
-            out = new PrintWriter(Main.socket.getOutputStream(),true);
+            main.socket = new Socket(main.HOSTNAME, main.PORT);
+            in = new BufferedReader(new InputStreamReader(main.socket.getInputStream()));
+            out = new PrintWriter(main.socket.getOutputStream(),true);
 
             File new_file = new File(file_download.getFileName());
             if(sTable.getColumns().contains(new_file)) {
@@ -144,7 +148,7 @@ public class UI{
         catch (Exception e){e.printStackTrace();}
     }
 
-    private static void uploadFile(BufferedReader in, PrintWriter out, File file) throws IOException{
+    private void uploadFile(BufferedReader in, PrintWriter out, File file) throws IOException{
         FileInputStream fIn = new FileInputStream(file);
         out.println("UPLOAD");
         out.println(file.getName());
@@ -160,7 +164,7 @@ public class UI{
         fIn.close();
     }
 
-    public static boolean confirmBox(){
+    public boolean confirmBox(){
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
         confirm.setHeaderText("File Already Exists");
         confirm.setContentText("Would you like to replace this file?");
@@ -178,7 +182,7 @@ public class UI{
 
     }
 
-    public static File chooseDirectory(){
+    public File chooseDirectory(){
         DirectoryChooser directoryChooser = new DirectoryChooser();
         directoryChooser.setTitle("Choose a Shared Folder");
         directoryChooser.setInitialDirectory(new File("."));

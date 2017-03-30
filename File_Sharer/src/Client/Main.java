@@ -13,12 +13,12 @@ import java.net.Socket;
 public class Main extends Application {
 
 
-    public static Socket socket;
-    public static BufferedReader in;
-    public static PrintWriter out;
+    public Socket socket;
+    public BufferedReader in;
+    public PrintWriter out;
 
-    public static String HOSTNAME = "10.190.17.169";
-    public static int    PORT = 8080;
+    public String HOSTNAME = "10.190.17.169";
+    public int PORT = 8080;
 
     File sharedFolder;
 
@@ -31,13 +31,15 @@ public class Main extends Application {
         serverDS = new DataSource();
 
         dir();
-        UI.setUI(primaryStage);
-        sharedFolder = UI.chooseDirectory();
+
+        UI ui = new UI(this);
+        ui.setUI(primaryStage);
+        sharedFolder = ui.chooseDirectory();
 
         traverseDirectory(sharedFolder);
 
-        UI.clientTable.setItems(clientDS.getFiles());
-        UI.serverTable.setItems(serverDS.getFiles());
+        ui.clientTable.setItems(clientDS.getFiles());
+        ui.serverTable.setItems(serverDS.getFiles());
     }
 
     public void traverseDirectory(File file)throws IOException {
