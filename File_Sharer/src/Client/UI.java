@@ -9,6 +9,7 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 
 import java.io.*;
+import java.net.Socket;
 import java.util.Optional;
 
 
@@ -67,8 +68,8 @@ public class UI{
         bp.setTop(hb);
         bp.setCenter(sp);
 
-        download.setOnAction(e -> _downloadFiles(Main.in,Main.out, clientTable, serverTable));
-        upload.setOnAction(e -> _uploadFiles(Main.in,Main.out, clientTable, serverTable));
+        download.setOnAction(e -> _downloadFiles(Main.in, Main.out, clientTable, serverTable));
+        upload.setOnAction(e -> _uploadFiles(Main.in, Main.out, clientTable, serverTable));
 
         Scene scene = new Scene(bp, 650, 650);
         primaryStage.setResizable(false);
@@ -82,6 +83,11 @@ public class UI{
         FileList file_download = sTable.getSelectionModel().getSelectedItem();
 
         try {
+
+            Main.socket = new Socket(Main.HOSTNAME, Main.PORT);
+            in = new BufferedReader(new InputStreamReader(Main.socket.getInputStream()));
+            out = new PrintWriter(Main.socket.getOutputStream(),true);
+
             File new_file = new File(file_download.getFileName());
             if(cTable.getItems().contains(file_download)) {
                 boolean replace = confirmBox();
@@ -121,6 +127,10 @@ public class UI{
         FileList file_download = cTable.getSelectionModel().getSelectedItem();
 
         try {
+            Main.socket = new Socket(Main.HOSTNAME, Main.PORT);
+            in = new BufferedReader(new InputStreamReader(Main.socket.getInputStream()));
+            out = new PrintWriter(Main.socket.getOutputStream(),true);
+
             File new_file = new File(file_download.getFileName());
             if(sTable.getColumns().contains(new_file)) {
                 boolean replace = confirmBox();

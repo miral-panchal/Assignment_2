@@ -17,8 +17,8 @@ public class Main extends Application {
     public static BufferedReader in;
     public static PrintWriter out;
 
-    public  static String HOSTNAME = "10.190.17.169";
-    public  static int    PORT = 8080;
+    public static String HOSTNAME = "99.236.141.52";
+    public static int    PORT = 8080;
 
     File sharedFolder;
 
@@ -68,12 +68,9 @@ public class Main extends Application {
     }
 
     public void dir() throws IOException{
-
-        if(socket.isClosed()) {
-            socket = new Socket(HOSTNAME, PORT);
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            out = new PrintWriter(socket.getOutputStream(),true);
-        }
+        socket = new Socket(HOSTNAME, PORT);
+        in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        out = new PrintWriter(socket.getOutputStream(),true);
 
         out.println("DIR");
 
