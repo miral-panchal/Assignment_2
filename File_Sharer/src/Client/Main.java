@@ -59,7 +59,6 @@ public class Main extends Application {
         socket = new Socket(HOSTNAME, PORT);
         in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         out = new PrintWriter(socket.getOutputStream(),true);
-
         out.println("DIR");
 
         while(true){
@@ -77,7 +76,6 @@ public class Main extends Application {
                 break;
             }
         }
-
     }
 
 }

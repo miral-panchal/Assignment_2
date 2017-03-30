@@ -73,7 +73,6 @@ public class FileShareServerThread extends Thread {
         File[] filesInDir = mainDirectory.listFiles();
         for (int i = 0; i < filesInDir.length; i++) {
             out.println(filesInDir[i].getName());
-            System.out.println(filesInDir[i].getName());
         }
     }
 
@@ -105,7 +104,7 @@ public class FileShareServerThread extends Thread {
      */
     public void Download(String fileName){
         try {
-            FileReader fileReader  = new FileReader(fileName);
+            FileReader fileReader  = new FileReader(folderName+File.separator+fileName);
             BufferedReader input = new BufferedReader(fileReader);
             String line;
 
@@ -113,7 +112,6 @@ public class FileShareServerThread extends Thread {
             while ((line = input.readLine()) != null) {
                 out.println(line);
                 System.out.println(line);
-
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
