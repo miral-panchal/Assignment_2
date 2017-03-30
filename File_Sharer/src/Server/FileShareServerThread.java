@@ -112,6 +112,10 @@ public class FileShareServerThread extends Thread {
             while ((line = input.readLine()) != null) {
                 out.println(line);
                 System.out.println(line);
+<<<<<<< HEAD
+
+=======
+>>>>>>> 49c2d928d46772981e31f7a526b89da6f19f09d2
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
