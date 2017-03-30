@@ -60,12 +60,6 @@ public class Main extends Application {
         in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         out = new PrintWriter(socket.getOutputStream(),true);
 
-<<<<<<< HEAD
-            socket.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-=======
         out.println("DIR");
 
         while(true){
@@ -83,8 +77,6 @@ public class Main extends Application {
                 break;
             }
         }
-
->>>>>>> 6d1bde579104be0fb9aa01eac80398bb3f57510c
     }
 
 }
