@@ -3,12 +3,8 @@ package Client;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
-import java.util.Scanner;
 
 
 /**
@@ -17,50 +13,86 @@ import java.util.Scanner;
 public class Main extends Application {
 
 
-    static Socket socket;
-    static BufferedReader in;
-    static PrintWriter out;
+    public static Socket socket;
+    public static BufferedReader in;
+    public static PrintWriter out;
 
-    public  static String HOSTNAME = "localhost";
+    public  static String HOSTNAME = "10.190.17.169";
     public  static int    PORT = 8080;
+
+    File sharedFolder;
+
+    private DataSource clientDS;
+    private DataSource serverDS;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        primaryStage = UI.setUI(primaryStage);
+        clientDS = new DataSource();
+        serverDS = new DataSource();
 
+        dir();
+        UI.setUI(primaryStage);
+        sharedFolder = UI.chooseDirectory();
 
+        traverseDirectory(sharedFolder);
+
+        UI.clientTable.setItems(clientDS.getFiles());
+        UI.serverTable.setItems(serverDS.getFiles());
+    }
+
+    public void traverseDirectory(File file)throws IOException {
+        //if the file is a directory
+        if (file.isDirectory()) {
+            // for directories, recursively call
+            File[] filesInDir = file.listFiles();
+            for (int i = 0; i < filesInDir.length; i++) {
+                traverseDirectory(filesInDir[i]);
+            }
+        }
+        else
+            clientDS.setFiles(file.getName());
     }
 
     public static void main (String args []) {
-
         try {
             socket = new Socket(HOSTNAME,PORT);
 
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out = new PrintWriter(socket.getOutputStream(),true);
 
-
-        }
-        catch (Exception e) {e.printStackTrace();}
-
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter Command");
-        out.println(scanner.next()); // Get what the user types.
-        try {
-            String msg = in.readLine();
-            System.out.println(msg);
-            if(!msg.equals("Not a valid command")) {
-                System.out.println("The file to upload or download: ");
-                out.println(scanner.next()); // Get what the user types.
-            }else
+            launch(args);
 
             socket.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+        }
+        catch (Exception e) {e.printStackTrace();}
+    }
+
+    public void dir() throws IOException{
+
+        if(socket.isClosed()) {
+            socket = new Socket(HOSTNAME, PORT);
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            out = new PrintWriter(socket.getOutputStream(),true);
         }
 
+        out.println("DIR");
 
-        launch(args);
+        while(true){
+
+            String temp = in.readLine();
+            if(temp != null) {
+                serverDS.setFiles(temp);
+                System.out.println(temp);
+            }
+
+            else {
+                out.close();
+                in.close();
+                socket.close();
+                break;
+            }
+        }
+
     }
 
 }
