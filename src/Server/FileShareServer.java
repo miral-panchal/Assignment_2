@@ -9,7 +9,7 @@ import java.net.Socket;
  */
 public class FileShareServer {
 
-    // create serve7r socket used to accept connections on port SERVER_PORT
+    // create server socket used to accept connections on port SERVER_PORT
     protected ServerSocket serverSocket;
 
     protected Socket clientSocket;

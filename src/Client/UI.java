@@ -41,7 +41,7 @@ public class UI{
         clientTable = new TableView();
         serverTable = new TableView();
 
-        TableColumn clientTitle = new TableColumn("Shared Folder - Local Client");
+        TableColumn clientTitle = new TableColumn(main.name);
         TableColumn serverTitle = new TableColumn("Shared Folder - Server");
 
         clientTable.getColumns().add(clientTitle);
@@ -110,6 +110,12 @@ public class UI{
         catch (Exception e){e.printStackTrace();}
     }
 
+    /**
+     * Download file from server
+     * @param in  the buffer reader used to read from the server
+     * @param out  the printWriter used to write to ther server
+     * @param file  the file to download
+     */
     private void downloadFile(BufferedReader in, PrintWriter out, File file) throws IOException{
         PrintWriter fOut = new PrintWriter(main.sharedFolder.getAbsolutePath()+File.separator+file);
         out.println("DOWNLOAD");
@@ -154,8 +160,14 @@ public class UI{
         catch (Exception e){e.printStackTrace();}
     }
 
+    /**
+     * Upload file to the server
+     * @param in  the buffer reader used to read from the server
+     * @param out  the printWriter used to write to ther server
+     * @param file  the file to upload
+     */
     private void uploadFile(BufferedReader in, PrintWriter out, File file) throws IOException{
-        BufferedReader fIn = new BufferedReader(new FileReader(File.separator+file));
+        BufferedReader fIn = new BufferedReader(new FileReader(main.sharedFolder.getAbsolutePath()+File.separator+file));
         out.println("UPLOAD");
         out.println(file.getName());
         out.flush();
