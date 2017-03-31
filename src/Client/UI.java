@@ -93,20 +93,19 @@ public class UI{
             out = new PrintWriter(main.socket.getOutputStream(),true);
 
             File new_file = new File(file_download.getFileName());
-//            System.out.println(new_file);
-            if(cTable.getItems().contains(file_download)) {
-                boolean replace = confirmBox();
-                if(replace == true) {
-                    downloadFile(in, out, new_file);
-                }
-                else {
-                    return;
+
+            for (int i = 0; i < cTable.getItems().size(); i++) {
+                if (file_download.getFileName().equals(cTable.getItems().get(i))){
+                    boolean replace = confirmBox();
+                    if(replace == true) {
+                        downloadFile(in, out, new_file);
+                        return;
+                    }
+                    else
+                        return;
                 }
             }
-            else {
-                new_file.createNewFile();
-                downloadFile(in, out, new_file);
-            }
+            downloadFile(in, out, new_file);
         }
         catch (Exception e){e.printStackTrace();}
     }
@@ -139,15 +138,18 @@ public class UI{
             out = new PrintWriter(main.socket.getOutputStream(),true);
 
             File new_file = new File(file_download.getFileName());
-            if(sTable.getColumns().contains(new_file.getName())) {
-                boolean replace = confirmBox();
-                if(replace == true)
-                    uploadFile(in,out,new_file);
-                else
-                    return;
+            for (int i = 0; i < sTable.getItems().size(); i++) {
+                if (file_download.getFileName().equals(cTable.getItems().get(i))){
+                    boolean replace = confirmBox();
+                    if(replace == true) {
+                        downloadFile(in, out, new_file);
+                        return;
+                    }
+                    else
+                        return;
+                }
             }
-            else
-                uploadFile(in,out,new_file);
+            uploadFile(in,out,new_file);
         }
         catch (Exception e){e.printStackTrace();}
     }
