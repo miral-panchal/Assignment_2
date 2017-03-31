@@ -95,7 +95,7 @@ public class UI{
             File new_file = new File(file_download.getFileName());
 
             for (int i = 0; i < cTable.getItems().size(); i++) {
-                if (file_download.getFileName().equals(cTable.getItems().get(i))){
+                if (file_download.getFileName().equals(cTable.getItems().get(i).getFileName())){
                     boolean replace = confirmBox();
                     if(replace == true) {
                         downloadFile(in, out, new_file);
@@ -139,7 +139,7 @@ public class UI{
 
             File new_file = new File(file_download.getFileName());
             for (int i = 0; i < sTable.getItems().size(); i++) {
-                if (file_download.getFileName().equals(cTable.getItems().get(i))){
+                if (file_download.getFileName().equals(sTable.getItems().get(i).getFileName())){
                     boolean replace = confirmBox();
                     if(replace == true) {
                         downloadFile(in, out, new_file);
