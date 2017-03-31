@@ -93,6 +93,7 @@ public class UI{
             out = new PrintWriter(main.socket.getOutputStream(),true);
 
             File new_file = new File(file_download.getFileName());
+//            System.out.println(new_file);
             if(cTable.getItems().contains(file_download)) {
                 boolean replace = confirmBox();
                 if(replace == true) {
@@ -138,7 +139,7 @@ public class UI{
             out = new PrintWriter(main.socket.getOutputStream(),true);
 
             File new_file = new File(file_download.getFileName());
-            if(sTable.getColumns().contains(new_file)) {
+            if(sTable.getColumns().contains(new_file.getName())) {
                 boolean replace = confirmBox();
                 if(replace == true)
                     uploadFile(in,out,new_file);
@@ -152,7 +153,7 @@ public class UI{
     }
 
     private void uploadFile(BufferedReader in, PrintWriter out, File file) throws IOException{
-        BufferedReader fIn = new BufferedReader(new FileReader(main.sharedFolder.getAbsolutePath()+File.separator+file));
+        BufferedReader fIn = new BufferedReader(new FileReader(File.separator+file));
         out.println("UPLOAD");
         out.println(file.getName());
         out.flush();
