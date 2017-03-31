@@ -18,7 +18,7 @@ public class Main extends Application {
     public BufferedReader in;
     public PrintWriter out;
 
-    public String HOSTNAME = "10.190.17.169";
+    public String HOSTNAME = "localhost";
     public int PORT = 8080;
 
     File sharedFolder;
