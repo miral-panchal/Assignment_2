@@ -1,6 +1,7 @@
 package Client;
 
 import javafx.application.Application;
+import javafx.collections.ObservableList;
 import javafx.stage.Stage;
 
 import java.io.*;
@@ -22,8 +23,12 @@ public class Main extends Application {
 
     File sharedFolder;
 
-    private DataSource clientDS;
-    private DataSource serverDS;
+    DataSource clientDS;
+    DataSource serverDS;
+
+    public ObservableList clientOL;
+    public ObservableList serverOL;
+
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -38,8 +43,11 @@ public class Main extends Application {
 
         traverseDirectory(sharedFolder);
 
-        ui.clientTable.setItems(clientDS.getFiles());
-        ui.serverTable.setItems(serverDS.getFiles());
+        clientOL= clientDS.getFiles();
+        serverOL = serverDS.getFiles();
+
+        ui.clientTable.setItems(clientOL);
+        ui.serverTable.setItems(serverOL);
     }
 
     public void traverseDirectory(File file)throws IOException {
@@ -69,7 +77,6 @@ public class Main extends Application {
             String temp = in.readLine();
             if(temp != null) {
                 serverDS.setFiles(temp);
-                System.out.println(temp);
             }
 
             else {

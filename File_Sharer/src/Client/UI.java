@@ -111,7 +111,7 @@ public class UI{
     }
 
     private void downloadFile(BufferedReader in, PrintWriter out, File file) throws IOException{
-        PrintWriter fOut = new PrintWriter(file);
+        PrintWriter fOut = new PrintWriter(main.sharedFolder.getAbsolutePath()+File.separator+file);
         out.println("DOWNLOAD");
         out.println(file.getName());
         out.flush();
@@ -124,6 +124,9 @@ public class UI{
         out.close();
         in.close();
         fOut.close();
+
+        main.clientOL.clear();
+        main.traverseDirectory(main.sharedFolder);
     }
 
     public void _uploadFiles(BufferedReader in, PrintWriter out, TableView<FileList> cTable, TableView<FileList> sTable) {
@@ -149,19 +152,22 @@ public class UI{
     }
 
     private void uploadFile(BufferedReader in, PrintWriter out, File file) throws IOException{
-        FileInputStream fIn = new FileInputStream(file);
+        BufferedReader fIn = new BufferedReader(new FileReader(main.sharedFolder.getAbsolutePath()+File.separator+file));
         out.println("UPLOAD");
         out.println(file.getName());
         out.flush();
 
-        int temp;
-        while((temp = fIn.read()) != -1) {
-            System.out.print((char) temp);
+        String line;
+        while((line = fIn.readLine()) != null) {
+            out.println(line);
         }
 
         out.close();
         in.close();
         fIn.close();
+
+        main.serverOL.clear();
+        main.dir();
     }
 
     public boolean confirmBox(){
@@ -179,14 +185,12 @@ public class UI{
             return true;
         else
             return false;
-
     }
 
     public File chooseDirectory(){
         DirectoryChooser directoryChooser = new DirectoryChooser();
         directoryChooser.setTitle("Choose a Shared Folder");
         directoryChooser.setInitialDirectory(new File("."));
-
         return directoryChooser.showDialog(primaryStage);
     }
 }
