@@ -89,8 +89,8 @@ public class FileShareServerThread extends Thread {
             PrintWriter output = new PrintWriter(file);
             String msg = in.readLine();
             while(msg != null){
-                msg = in.readLine();
                 output.println(msg);
+                msg = in.readLine();
             }
             output.close();
         } catch (IOException e) {
